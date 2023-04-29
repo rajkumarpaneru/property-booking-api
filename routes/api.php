@@ -19,3 +19,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('auth/register', App\Http\Controllers\Auth\RegisterController::class);
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('owner/properties',
+        [\App\Http\Controllers\Owner\PropertyController::class, 'index']);
+});
