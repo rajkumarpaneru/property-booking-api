@@ -20,6 +20,10 @@ class CreateUserProfilesTable extends Migration
             $table->string('invoice_postcode')->nullable();
             $table->string('invoice_city')->nullable();
             $table->foreignId('invoice_country_id')->nullable()->constrained('countries');
+            $table->string('gender')->nullable();
+            $table->date('birth_date')->nullable();
+            $table->foreignId('nationality_country_id')->nullable()->constrained('countries');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
