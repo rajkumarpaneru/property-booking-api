@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\PropertySearchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,3 +32,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('user/bookings',
         [\App\Http\Controllers\User\BookingController::class, 'index']);
 });
+
+Route::get('search', PropertySearchController::class);
