@@ -16,6 +16,7 @@ class Apartment extends Model
         'capacity_adults',
         'capacity_children',
         'size',
+        'bathrooms'
     ];
 
     public function apartment_type()
