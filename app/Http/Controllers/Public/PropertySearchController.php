@@ -11,14 +11,14 @@ class PropertySearchController extends Controller
 {
     public function __invoke(Request $request)
     {
-        return Property::with('city')
-            ->when($request->city, function($query) use ($request) {
+        return Property::with('city', 'apartments.apartment_type')
+            ->when($request->city, function ($query) use ($request) {
                 $query->where('city_id', $request->city);
             })
-            ->when($request->country, function($query) use ($request) {
+            ->when($request->country, function ($query) use ($request) {
                 $query->whereHas('city', fn($q) => $q->where('country_id', $request->country));
             })
-            ->when($request->geoobject, function($query) use ($request) {
+            ->when($request->geoobject, function ($query) use ($request) {
                 $geoobject = Geoobject::find($request->geoobject);
                 if ($geoobject) {
                     $condition = "(
@@ -32,8 +32,8 @@ class PropertySearchController extends Controller
                     $query->whereRaw($condition);
                 }
             })
-            ->when($request->adults && $request->children, function($query) use ($request) {
-                $query->withWhereHas('apartments', function($query) use ($request) {
+            ->when($request->adults && $request->children, function ($query) use ($request) {
+                $query->withWhereHas('apartments', function ($query) use ($request) {
                     $query->where('capacity_adults', '>=', $request->adults)
                         ->where('capacity_children', '>=', $request->children);
                 });
