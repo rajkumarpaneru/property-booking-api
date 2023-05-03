@@ -31,4 +31,9 @@ class Property extends Model
 
         self::observe(PropertyObserver::class);
     }
+
+    public function apartments()
+    {
+        return $this->hasMany(Apartment::class);
+    }
 }
