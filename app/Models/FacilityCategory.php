@@ -10,4 +10,9 @@ class FacilityCategory extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    public function facilities()
+    {
+        return $this->hasMany(Facility::class, 'category_id');
+    }
 }
