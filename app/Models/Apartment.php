@@ -54,4 +54,9 @@ class Apartment extends Model
             get: fn () => $bedsList
         );
     }
+
+    public function facilities()
+    {
+        return $this->belongsToMany(Facility::class);
+    }
 }
