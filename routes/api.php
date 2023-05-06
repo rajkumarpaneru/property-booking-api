@@ -37,3 +37,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 //Route::get('properties/{property}',
 //    \App\Http\Controllers\Public\PropertyController::class);
+
+//Route::get('apartments/{apartment}',
+//    \App\Http\Controllers\Public\ApartmentController::class);
