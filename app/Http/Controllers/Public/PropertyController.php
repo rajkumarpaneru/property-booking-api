@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\public;
+//namespace App\Http\Controllers\public;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PropertySearchResource;

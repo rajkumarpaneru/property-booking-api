@@ -35,5 +35,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
 //Route::get('search', PropertySearchController::class);
 
-Route::get('properties/{property}',
-    \App\Http\Controllers\Public\PropertyController::class);
+//Route::get('properties/{property}',
+//    \App\Http\Controllers\Public\PropertyController::class);
