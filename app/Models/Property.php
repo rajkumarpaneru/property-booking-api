@@ -37,12 +37,17 @@ class Property extends Model
         return $this->hasMany(Apartment::class);
     }
 
-    public function address(): Attribute
+//    public function address(): Attribute
+//    {
+//        return new Attribute(
+//            get: fn () => $this->address_street
+//        . ', ' . $this->address_postcode
+//        . ', ' . $this->city->name
+//        );
+//    }
+
+    public function facilities()
     {
-        return new Attribute(
-            get: fn () => $this->address_street
-        . ', ' . $this->address_postcode
-        . ', ' . $this->city->name
-        );
+        return $this->belongsToMany(Facility::class);
     }
 }
