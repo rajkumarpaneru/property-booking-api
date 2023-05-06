@@ -22,6 +22,7 @@ class PropertyPhotoController extends Controller
 
         return [
             'filename' => $photo->getUrl(),
+            'thumbnail' => $photo->getUrl('thumbnail')
         ];
     }
 }

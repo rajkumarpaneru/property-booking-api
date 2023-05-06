@@ -50,4 +50,10 @@ class Property extends Model
     {
         return $this->belongsToMany(Facility::class);
     }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumbnail')
+            ->width(800);
+    }
 }
