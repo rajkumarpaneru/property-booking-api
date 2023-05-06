@@ -12,7 +12,7 @@ class ApartmentSearchResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return array|Arrayable|JsonSerializable
      */
     public function toArray($request)
@@ -20,10 +20,11 @@ class ApartmentSearchResource extends JsonResource
         return [
             'name' => $this->name,
 //            'type' => $this->apartment_type?->name,
-            'type' => $this->apartment_type? $this->apartment_type->name : '',
+            'type' => $this->apartment_type ? $this->apartment_type->name : '',
             'size' => $this->size,
             'beds_list' => '', // coming soon
             'bathrooms' => $this->bathrooms,
+            'facilities' => FacilityResource::collection($this->whenLoaded('facilities')),
         ];
     }
 }
