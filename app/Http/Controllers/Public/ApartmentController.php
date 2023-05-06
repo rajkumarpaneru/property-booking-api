@@ -3,6 +3,7 @@
 //namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ApartmentDetailsResource;
 use App\Http\Resources\ApartmentSearchResource;
 use App\Models\Apartment;
 use Illuminate\Http\Request;
@@ -13,6 +14,11 @@ class ApartmentController extends Controller
     {
         $apartment->load('facilities.category');
 
-        return new ApartmentSearchResource($apartment);
+        $apartment->setAttribute(
+            'facility_categories',
+            $apartment->facilities->groupBy('category.name')->mapWithKeys(fn ($items, $key) => [$key => $items->pluck('name')])
+        );
+
+        return new ApartmentDetailsResource($apartment);
     }
 }
