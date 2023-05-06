@@ -40,3 +40,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 //Route::get('apartments/{apartment}',
 //    \App\Http\Controllers\Public\ApartmentController::class);
+
+Route::prefix('owner')->group(function () {
+    Route::post('properties/{property}/photos',
+        [\App\Http\Controllers\Owner\PropertyPhotoController::class, 'store']);
+});
