@@ -20,9 +20,17 @@ class PropertyPhotoController extends Controller
 
         $photo = $property->addMediaFromRequest('photo')->toMediaCollection('photos');
 
+        $position = Media::query()
+                ->where('model_type', 'App\Models\Property')
+                ->where('model_id', $property->id)
+                ->max('position') + 1;
+        $photo->position = $position;
+        $photo->save();
+
         return [
             'filename' => $photo->getUrl(),
-            'thumbnail' => $photo->getUrl('thumbnail')
+            'thumbnail' => $photo->getUrl('thumbnail'),
+            'position' => $photo->position
         ];
     }
 }
