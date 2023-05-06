@@ -47,8 +47,23 @@ class PropertySearchController extends Controller
                         ->take(1);
                 });
             })
+            ->when($request->facilities, function($query) use ($request) {
+                $query->whereHas('facilities', function($query) use ($request) {
+                    $query->whereIn('facilities.id', $request->facilities);
+                });
+            })
             ->get();
 
-        return PropertySearchResource::collection($properties);
+        $allFacilities = $properties->pluck('facilities')->flatten();
+        $facilities = $allFacilities->unique('name')
+            ->mapWithKeys(function ($facility) use ($allFacilities) {
+                return [$facility->name => $allFacilities->where('name', $facility->name)->count()];
+            })
+            ->sortDesc();
+
+        return [
+            'properties' => PropertySearchResource::collection($properties),
+            'facilities' => $facilities,
+        ];
     }
 }
