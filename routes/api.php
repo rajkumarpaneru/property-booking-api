@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\User\PropertySearchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,13 +32,13 @@ Route::middleware('auth:sanctum')->group(function () {
         [\App\Http\Controllers\User\BookingController::class, 'index']);
 });
 
-//Route::get('search', PropertySearchController::class);
+Route::get('search', \App\Http\Controllers\User\PropertySearchController::class);
 
-//Route::get('properties/{property}',
-//    \App\Http\Controllers\Public\PropertyController::class);
+Route::get('properties/{property}',
+    \App\Http\Controllers\User\PropertyController::class);
 
-//Route::get('apartments/{apartment}',
-//    \App\Http\Controllers\Public\ApartmentController::class);
+Route::get('apartments/{apartment}',
+    \App\Http\Controllers\User\ApartmentController::class);
 
 Route::prefix('owner')->group(function () {
     Route::post('properties/{property}/photos',
