@@ -48,11 +48,11 @@ class Apartment extends Model
             foreach ($bedsByType as $bedType => $beds) {
                 $bedsListArray[] = $beds->count() . ' ' . str($bedType)->plural($beds->count());
             }
-            $bedsList .= ' ('.implode(', ' , $bedsListArray) .')';
+            $bedsList .= ' (' . implode(', ', $bedsListArray) . ')';
         }
 
         return new Attribute(
-            get: fn () => $bedsList
+            get: fn() => $bedsList
         );
     }
 
@@ -86,5 +86,10 @@ class Apartment extends Model
         }
 
         return $cost;
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
     }
 }
