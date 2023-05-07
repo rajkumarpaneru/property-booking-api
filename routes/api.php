@@ -47,3 +47,7 @@ Route::prefix('owner')->group(function () {
     Route::post('properties/{property}/photos/{photo}/reorder/{newPosition}',
         [\App\Http\Controllers\Owner\PropertyPhotoController::class, 'reorder']);
 });
+
+Route::prefix('user')->group(function () {
+    Route::resource('bookings', \App\Http\Controllers\User\BookingController::class);
+});
