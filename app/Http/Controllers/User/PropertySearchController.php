@@ -17,8 +17,13 @@ class PropertySearchController extends Controller
                 'city',
                 'apartments.apartment_type',
                 'apartments.rooms.beds.bed_type',
+                'apartments.prices' => function($query) use ($request) {
+                    $query->validForRange([
+                        $request->start_date ?? now()->addDay()->toDateString(),
+                        $request->end_date ?? now()->addDays(2)->toDateString(),
+                    ]);
+                },
                 'facilities',
-                // We add only this eager loading by position here
                 'media' => fn($query) => $query->orderBy('position'),
             ])
             ->when($request->city, function ($query) use ($request) {
