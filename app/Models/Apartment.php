@@ -59,4 +59,9 @@ class Apartment extends Model
     {
         return $this->belongsToMany(Facility::class);
     }
+
+    public function prices()
+    {
+        return $this->hasMany(ApartmentPrice::class);
+    }
 }
