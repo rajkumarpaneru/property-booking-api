@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PropertySearchResource;
+use App\Models\Facility;
 use App\Models\Geoobject;
 use App\Models\Property;
 use Illuminate\Http\Request;
@@ -12,12 +13,12 @@ class PropertySearchController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $properties = Property::query()
+        $propertiesQuery = Property::query()
             ->with([
                 'city',
                 'apartments.apartment_type',
                 'apartments.rooms.beds.bed_type',
-                'apartments.prices' => function($query) use ($request) {
+                'apartments.prices' => function ($query) use ($request) {
                     $query->validForRange([
                         $request->start_date ?? now()->addDay()->toDateString(),
                         $request->end_date ?? now()->addDays(2)->toDateString(),
@@ -56,33 +57,39 @@ class PropertySearchController extends Controller
                         ->take(1);
                 });
             })
-            ->when($request->facilities, function($query) use ($request) {
-                $query->whereHas('facilities', function($query) use ($request) {
+            ->when($request->facilities, function ($query) use ($request) {
+                $query->whereHas('facilities', function ($query) use ($request) {
                     $query->whereIn('facilities.id', $request->facilities);
                 });
             })
-            ->when($request->price_from, function($query) use ($request) {
-                $query->whereHas('apartments.prices', function($query) use ($request) {
+            ->when($request->price_from, function ($query) use ($request) {
+                $query->whereHas('apartments.prices', function ($query) use ($request) {
                     $query->where('price', '>=', $request->price_from);
                 });
             })
-            ->when($request->price_to, function($query) use ($request) {
-                $query->whereHas('apartments.prices', function($query) use ($request) {
+            ->when($request->price_to, function ($query) use ($request) {
+                $query->whereHas('apartments.prices', function ($query) use ($request) {
                     $query->where('price', '<=', $request->price_to);
                 });
             })
-            ->orderBy('bookings_avg_rating', 'desc')
-            ->get();
+            ->orderBy('bookings_avg_rating', 'desc');
 
-        $allFacilities = $properties->pluck('facilities')->flatten();
-        $facilities = $allFacilities->unique('name')
-            ->mapWithKeys(function ($facility) use ($allFacilities) {
-                return [$facility->name => $allFacilities->where('name', $facility->name)->count()];
-            })
-            ->sortDesc();
+        $facilities = Facility::query()
+            ->withCount(['properties' => function ($property) use ($propertiesQuery) {
+                // THIS ->pluck() NOW GETS IDs DIRECTLY FROM DB
+                $property->whereIn('id', $propertiesQuery->pluck('id'));
+            }])
+            ->get()
+            ->where('properties_count', '>', 0)
+            ->sortByDesc('properties_count')
+            ->pluck('properties_count', 'name');
+
+        $properties = $propertiesQuery->paginate(10)->withQueryString();
 
         return [
-            'properties' => PropertySearchResource::collection($properties),
+            'properties' => PropertySearchResource::collection($properties)
+                ->response()
+                ->getData(true),
             'facilities' => $facilities,
         ];
     }
