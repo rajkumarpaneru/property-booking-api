@@ -24,6 +24,8 @@ class BookingResource extends JsonResource
             'total_price' => $this->total_price,
 //            'cancelled_at' => $this->deleted_at?->toDateString(),
             'cancelled_at' => $this->deleted_at ? $this->deleted_at->toDateString() : null,
+            'rating' => $this->rating,
+            'review_comment' => $this->review_comment,
         ];
     }
 }
