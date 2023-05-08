@@ -2,10 +2,19 @@
 
 namespace Tests\Unit;
 
+use App\Services\PricingService;
 use PHPUnit\Framework\TestCase;
 
 class ApartmentPricingTest extends TestCase
 {
+    private PricingService $pricingService;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->pricingService = new PricingService();
+    }
+
     public function test_pricing_for_single_price(): void
     {
         $prices = collect([
