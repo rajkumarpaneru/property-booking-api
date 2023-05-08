@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Observers\PropertyObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Property extends Model
 {
@@ -55,5 +56,10 @@ class Property extends Model
     {
         $this->addMediaConversion('thumbnail')
             ->width(800);
+    }
+
+    public function bookings()
+    {
+        return $this->hasManyThrough(Booking::class, Apartment::class);
     }
 }
