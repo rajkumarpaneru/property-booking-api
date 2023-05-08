@@ -2,6 +2,7 @@
 
 namespace Database\Seeders\Performance;
 
+use App\Models\Geoobject;
 use Illuminate\Database\Seeder;
 
 class GeoobjectSeeder extends Seeder
@@ -11,8 +12,8 @@ class GeoobjectSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(int $count = 100): void
     {
-        //
+        Geoobject::factory($count)->create();
     }
 }

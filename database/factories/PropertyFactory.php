@@ -12,9 +12,8 @@ class PropertyFactory extends Factory
     public function definition(): array
     {
         return [
-            'owner_id' => User::where('role_id', Role::ROLE_OWNER)->value('id'),
+            // no owner_id or city_id anymore
             'name' => fake()->text(20),
-            'city_id' => City::value('id'),
             'address_street' => fake()->streetAddress(),
             'address_postcode' => fake()->postcode(),
             'lat' => fake()->latitude(),
